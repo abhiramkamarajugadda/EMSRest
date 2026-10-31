@@ -1,6 +1,7 @@
 package com.ems.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -14,19 +15,19 @@ public class EmployeeService {
 		this.repository = repository;
 	}
 	public Employee saveEmployee(Employee employee) {
-		// TODO Auto-generated method stub
 		return repository.save(employee);
 	}
 	public List<Employee> getAllEmployees() {
-		// TODO Auto-generated method stub
 		return repository.findAll();
 	}
-	public Employee searchEmployee(Integer id) {
-		// TODO Auto-generated method stub
-		return repository.findById(id).orElse(new Employee());
+	public Optional<Employee> searchEmployee(Integer id) {
+		return id == null ? Optional.empty() : repository.findById(id);
+	}
+
+	public boolean exists(Integer id) {
+		return id != null && repository.existsById(id);
 	}
 	public void deleteEmployee(Integer id) {
-		// TODO Auto-generated method stub
 		repository.deleteById(id);
 	}
 

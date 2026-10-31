@@ -1,11 +1,15 @@
 # EMSRest: Employee Management REST API
 
+[![CI](https://github.com/abhiramkamarajugadda/EMSRest/actions/workflows/ci.yml/badge.svg)](https://github.com/abhiramkamarajugadda/EMSRest/actions/workflows/ci.yml)
+
 A Spring Boot REST API for employee CRUD operations, backed by MySQL through Spring Data JPA and documented with Swagger UI (springdoc-openapi).
 
 ## Features
 
 - Create, list, fetch by id, update and delete employees
-- `ResponseEntity` responses with explicit HTTP status codes (201, 200, 302, 400, 404)
+- REST status codes: 201 Created with a `Location` header, 200 OK, 204 No Content on delete, 404 Not Found for unknown ids, 400 for an update without an id
+- The employee `password` field is write-only and never returned in JSON responses
+- `@WebMvcTest` controller tests with Mockito, run by GitHub Actions on every push
 - Layered design: controller, service and repository
 - Interactive API documentation through Swagger UI
 
@@ -39,11 +43,11 @@ Base path: `/api/ems/employees`
 
 | Method | Endpoint | Description | Success | Failure |
 |---|---|---|---|---|
-| POST | `/api/ems/employees` | Add an employee (JSON body) | 201 Created | 400 Bad Request |
-| GET | `/api/ems/employees` | List all employees | 302 Found | 404 Not Found |
-| GET | `/api/ems/employees/{id}` | Get an employee by id | 302 Found | 404 Not Found |
-| PUT | `/api/ems/employees` | Update an employee (JSON body with `id`) | 200 OK | 400 Bad Request |
-| DELETE | `/api/ems/employees/{id}` | Delete an employee | 200 OK | 400 Bad Request |
+| POST | `/api/ems/employees` | Add an employee (JSON body) | 201 Created (body and `Location` header) | |
+| GET | `/api/ems/employees` | List all employees | 200 OK (empty list when none) | |
+| GET | `/api/ems/employees/{id}` | Get an employee by id | 200 OK | 404 Not Found |
+| PUT | `/api/ems/employees` | Update an employee (JSON body with `id`) | 200 OK | 400 without `id`, 404 unknown `id` |
+| DELETE | `/api/ems/employees/{id}` | Delete an employee | 204 No Content | 404 Not Found |
 
 Sample request body:
 
@@ -85,6 +89,15 @@ cd EMSRest/EMSRest
    ```
 4. API: `http://localhost:5000/api/ems/employees`
    Swagger UI: `http://localhost:5000/swagger-ui/index.html`
+
+## Tests
+
+```bash
+cd EMSRest
+mvn -B verify
+```
+
+Runs 7 tests (controller tests with `@WebMvcTest` and `@MockitoBean`, plus a context test on an in-memory H2 database), so no MySQL is needed. GitHub Actions runs the same command on JDK 21 for every push.
 
 ## Author
 
