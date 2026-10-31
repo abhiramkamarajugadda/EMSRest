@@ -6,9 +6,11 @@ A Spring Boot REST API for employee CRUD operations, backed by MySQL through Spr
 
 ## Live Demo
 
-**Live link:** _coming soon (Render free tier)_ (opens Swagger UI, where every endpoint can be tried in the browser)
+**Live link:** [abhi-emsrest.onrender.com](https://abhi-emsrest.onrender.com) (opens Swagger UI, where every endpoint can be tried in the browser)
 
-The demo runs on an in-memory H2 database seeded with 6 sample employees (fictional). Anything you add or delete resets when the server restarts. The free server sleeps when idle, so the first visit can take about a minute to wake up.
+> Note: the free server sleeps when idle, so the first visit may take about a minute to wake up.
+
+The demo runs on an in-memory H2 database seeded with 6 sample employees (fictional). Anything you add or delete resets when the server restarts.
 
 ## Features
 
